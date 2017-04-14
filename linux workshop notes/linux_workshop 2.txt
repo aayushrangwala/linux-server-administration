@@ -1,0 +1,81 @@
+	1] ifconfig__
+		@@ no. of ADAPTERS are given in the form of "eh0, eth1..."
+		- "up" in ifconfig means to enable the network and "down" for disabling the network
+		-LOOPBACK is for self testing and diagnostics name is "lo"
+	
+	2] CONFIGURING THE DHCP SERVER:-
+		@@ server is different from normal desktop by its capacity and capability
+		-server can support 2TB of HDD ,desktop can only 32GB of HDD also server can have more thsn one processor
+		- server has the MIRROR HDD facility ie.data is redundatly stored in other HDD
+		
+		@@ 2 types of OS:- server os and desktop os
+		- 3 steps to be followed to configure any server:-
+			--installation of s/w
+			--configuration 
+			--start of service
+		
+	3] DHCP:-
+		-DHCP server doesnt installed on UBUNTU becoz its desktopversion
+		-check if DHCP is pre installed or not(rpm -q dhcp)
+		-install the package by (yum install dhcp)
+		-go to the vi file of the path "/etc/dhcp/dhcpd.conf"
+		-# cd /usr/share/doc/dhcp-4.1.2/
+		-"ls" check the file
+
+	subnet 172.16.0.0  netmask 255.255.0.0
+	{		(our IP adress is in range  [172.16].200.xxx)
+		- write in vi /etc/dhcp/dhcp.conf  --- "option router 172.16.200.1;" (this will be the gateway address for all the connected m/c)
+		@@EX:- cyberroam
+		
+		-we require 4 parametres to assign any IP adress to the m/c
+		-subnet mask is to be given as  "option subnet - mask class A/B/C/D;"
+		@@ class A- 255.0.0.0
+		@@ class B- 255.255.0.0
+		@@ class C- 255.255.255.0
+		@@ class D- 255.255.255.255
+
+		---option domain-name "srknec.edu";(DNS is alloted)
+		--"option domain-name-servers 172.16.200.1;" (the gateway server and dns server is same so same IP adress is alloted)
+		--"range 172.16.200.101 172.16.200.150;" (range for the clients)
+		--"default-lease-time 1W;"(ie 1 week)or "default-lease-time 600H;"(H for hour)
+
+	}
+
+		-to start the server "systemctl start dhcpd"--> failed 
+		-to see the problem see the log file go to "cd /var/log"
+		-to see error cat messages
+
+		@@ to give an IP address to a host ie. any printer etc
+			we use host_____{   } block
+
+
+	3] DNS SERVER CONFIGURATION:-  (bind is the package name for DNS)
+		@@@@@on typing the site name it will send request to DNS server for mapping and IP adress is alloted in network properties
+		     DNS server will provide the IP adress to the browser and then directs to the required site and the web page is transfered to the client
+		-FQDN - fully qualified domain name ex:- if nickname of any local server within the the site ie accounts then "accounts.srknec.edu"
+			
+	INSTALLATION:- check if installed or not  (rpm -q bind) 		
+			then if not yum install bind
+			it will make a folder "/var/name"(dynamically)
+			also /etc/named.conf
+
+	CONFIGURATION:- copy the /etc/named.conf in /etc.named.conf.bak	
+		2(a)- add 2 zones : one for forward and reverse
+		2(b)- cd /var/named/dynamic because all the entries are to be made by the administrater
+		    -then vi srknec.edu.fdb
+		- then edit the parameters as given in the files ie. serial no.,refresh
+		--the serial number is been compared by the slave to check if any changes is done or not so whenever you do any changs always increase the serial number
+		--refresh 
+		--retry time 
+		--in the statement SOA fedora.srknec.edu. ______ here fedora is the server name ie machine name
+		--fedora.srknec.edu.	IN	A	123.23.252.25   (m/c name internet(IN) A(address)  IP(64.646.646.6))
+		--www	IN	CNAME	fedora   (www is the internet canonanical name)
+
+		2(c) -copy the same details from fdb file and do some changes
+		2(d) -remove all the nick names and just add the last ip ie xxx.xxx.xxx.250 so write 250 IN PTR m/c name
+		--edit the the newly created server in vi /etc/resolv.conf
+			---search srkinc.edu
+				nameserver x.x.x.x
+		
+			
+			

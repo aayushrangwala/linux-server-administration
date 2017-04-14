@@ -1,0 +1,130 @@
+	1] FTP SERVER CONFIGURATION:- 
+	
+	INSTALLING:-
+		package name - vsftpd port - 21
+		@@ after installng pkg a file have to be created /etc/vsftpd/vsftpd.conf
+		-check ls /etc/vsftpd/vsftpd.conf
+		-change the directory to the path
+		-cp vsftpd.conf vsftpd.conf.bak
+	
+	CONFIGURATION:-		
+
+		-vi vsftpd.conf
+		-now change the parameters
+			--anonymous_enable - yes -> NO(if want to protect from anonymous user)
+			--local_enable = yes(if want to allows users)
+			--local_umask=022
+
+			@@ check the umask value by typing umask command 
+			file - umask = file permission (666 - 022 = 644)
+			--anon_upload_enable=yes (uploading the files by anonymous user permission must be NO)
+			--anon_mkdir_write_enable=yes (permission for anonymous user to make a dir)
+			--xferlog_enable = yes (log file of the transfer)
+			--connect_from_port_20=yes(keep it yes)
+			--chown_uploads=yes (if want to make the owner of the files as anony)
+			--chown_username=whoever
+			--xferlog_file=/var/log/xferlog
+			--idle_session_timeout=600 (it will be disconnected if no action is been taken)
+			--ftpd_banner = welcome to the blah FTPservice (have to change the message which will be displayed to the user on successful login)
+			--deny_email_enable=yes	(allow email login to the server)
+			--banned_email_file=/etc/vsftpd/banned.conf (bann any anonymous email login)
+
+	STARTING:-
+		-systemctl start vsftpd
+
+
+	2] after logging in to the server either linux or windows --username and email as pasword is given
+		-- it will show the data as /home/username and will show as "ftp>"
+		-- now if we give command as "get filename" it will dnload and for multiple getting -  mget filename1 filna,e2.... and also mget *txt ---all files with txt format
+		-- "put filename" for uploading and for "mput *.exe" upload all exe files from /home/username folder
+		--if dont want to dnld from username folder then command  -- ftp> cd /reports   (if only paths are given with get command to get a file it wont work)
+		-- for all the above operations the server side folder is same ie. /data but to change to ex. ftp>lcd /reports
+		--if we want all the operations to be GUI based the client needs to install ftpclient software
+			@@ cute ftp, ftp pro, ftp explorer in windows
+			@@ gexplorer
+
+
+
+	3] SAMBA 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	CONFIGURATION:- 
+		-
+		-
+		-
+		-
+		-security = domain (if to specified domain or do ot share)
+		-passdb backend = tdbsam
+		-domain master = yes
+		-domain logons = yes    (leave all these as it is)
+		@@ share definitions  (files that is to be shared b/w linux server)
+		
+		//section make
+		-[software]
+		-comment = sharring s/w folder to windows
+		-path = /software
+		-public = NO (if dont want to share everyone)
+		-is NO then specify username
+		-writable = no (anyone can change it even delete it so keep it no)
+		-printable = no  (no if sharing the folders not hte printer)
+		-write_list = +staff
+		-browsable = yes
+
+		//make share sawgrargae
+		-[cdrom]
+		-comment = share cdrom
+		-path = //path where it is mounted
+		-printable = NO
+		-browsable = yes
+		-writable = no
+
+
+		//printer sharing
+		-[lin_prin]
+		-comment = share printer to all windows m/c
+		-path = //must be directory in which spooler is created    /var/spool/lin_rpin
+		-pritable = yes
+		-writable = no
+		-browsable = yes
+
+	STARTING:- 
+		systemctl start smb
+
+
+	@@@ if administarter wants to show any new folder which a client has shared needs to be mounted to the server of linux
+		by command >>>mount //""ip of the client which is sharing""/folder
+
+
+	3] INSTALLATION:-
+		-pkg name - (httpd)
+		-/etc/httpd/conf/httpd.conf is made so copy it to backup file		 
+		-vi /etc/httpd/conf/httpd.conf
+		-parameters:-
+		--serverroot - /etc/httpd
+		--timeout - session timeout..keep it same
+		--listen 80 (it is the default port for http can cange it)
+		--include conf.d\*....     if want to include some changes then edit in conf.d file
+		--serverAdmin - email of the admin so the error ill be reported via email
+		--serverName - //domain name
+		--UseCanonicalName On
+		--DocumentRoot - path from where your docs will be served
+		--ErrorLog logs/error_log
+		--if  
+		--DirectoryIndex - tells webserverwhich page should be home
+
+		@@for windows to make the pc as webserver download XAMPP and start the apache service for web hosting
+
+
+

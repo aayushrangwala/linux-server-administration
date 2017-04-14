@@ -1,0 +1,53 @@
+File Systems:
+
+File systems provide a means of organizing data on a storage medium. 
+They provide all of the abstraction layers above sectors and cylinders of disks.
+There are different types of file systems available for different requirements.
+Such as :  Linux/UNIX distribution uses ext2,ext3,ext4,Btrfs
+           Windows distribution uses FAT32,NTFS etc.
+
+IMAGE1
+
+
+Distributed File Systems:
+
+One of the first uses of distributed client/server computing was in the realm of distributed file systems. 
+In such an environment, there are a number of client machines and one server (or a few).
+The server stores the data on its disks, and clients request data through well-formed protocol messages.
+
+IMAGE2
+
+This setup allows for easy sharing of data across clients. 
+Accessing of a file on one machine (Client 0) and then later use another (Client 2) will have the same
+view of the file system.
+On the client side there are client applications which requests for accessing of files and directories through the client-side file system and server replies on its server-side file system.
+
+IMAGE3
+
+
+From this simple overview one should get a sense that there are two important pieces of software in a client/server distributed file system: 
+			the client-side file system and the file server. 
+Together their behavior determines the behavior of the distributed file system. 
+
+
+Network File System (NFS)
+
+One of the earliest and quite successful distributed systems was developed by Sun Microsystems, and is known as the Sun Network File System(or NFS). 
+In defining NFS Sun took an unusual approach, instead of building a closed system, Sun instead developed an open protocol which simply specified the exact message formats that clients and servers would use to communicate. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

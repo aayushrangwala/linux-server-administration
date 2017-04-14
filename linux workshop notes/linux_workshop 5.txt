@@ -1,0 +1,68 @@
+	1] BACKUP AND RESTORE:- 
+		-can be HDD , TAPEDRIVE...
+		- can keep on SAN - storage area network  (connected to lan)  or NAS - network attatch storage 
+		 (nas is the device box in whixh backup is made and is connected to the internet)
+		- it is to be secured 
+		--@ two built in utilities "tar" - tape archieve and "cpio" - copy input o/p to use the NAS network   (widely used)
+		--command "tar" -cvf - (c-create , v - verbose backup means it will show what is been coping, f - file name it is to be stored and compressed)
+		--"tar -cvf /nasdsk/mydata.tar  /stud_data "(in which /nasdsk is the mount point which is at the other terminal of the NAS network then it will create /mydata.tar file and back up the specified folder)
+		--for connecting any HDD it is to be  first formatted then partition is to be made and then mounting
+		--to see the partitions ---"fdisk -l" - list of all the partition
+		--to mount connect, then "mkdir /new_dir_name
+		--"mount device_name /new_dir_name"
+		-- to format the disk--- "e2mkfs device_name"
+		-- default folder on linux to mount---/media/labeL_name  (it is by default and temporary)
+		-- to see that whether it is mounted or not command---- "df"
+		-- to see the listing of the HDD command---"ls path of the partition"
+		@@ ex:- if want to backup /home/it4/*.c (will backup all the files of .c from /home/it4)
+		-- tar -Pcvf /media/transcend/mycprog.tar  /home/it4/*.c ----(here this command will by default remove the '/' from the source path so to retain)
+
+		-- to unmount-----umount /media/...
+		
+		RESTORE:- 
+			--@@ lets assume we have to restore a file from HDD-
+			--so to see the files from backup -----tar -tvf /media/transcend/mycprog.c (t- table of contents)
+			@@@@ we cant use cat command for the tar file it will show the contents but not the file names 
+			-- tar -Pxvf /media/transcend/myprog.c  /home/it4/missing_filename   (only for one file but if /home/it4/... is not then all files will be restored and x- for extracting)
+			-- and "tar -uvf /media/... " for updating
+
+		@@@ CPIO:- cant take direct file names but only takes the running files ie. giving the o/p
+		
+		-- "find" - used for searching file in a folder  EX:- find ./ -name *.c   (search the files in current dir with the name of .c and also its path)
+		-- "grep" is used to search the patterns in a text file 
+		-- cmd1|cmd2  ----  (o/p of first command cmd1 is pipelined as i/p to second command cmd2 if cmd2 requires)
+		--ex:- find ./ -name *.c|cpio -ov /backup_deztination
+		--to see the table of contents--- "cpio -ivt -I(for input) /media...."
+
+	RESTORE:- 
+		--cpio -cvid -I /media...(backup filename)-----all files will be backup but if only one file is to be restored so specify just as in tar restore
+
+
+
+		@@@@@@ "free" command gives all the details of memory used and free...
+		@@@@@@ "top"  gives all the details about the cpu and processess
+		
+	ScHEDULAR:- 1) cron schedular - repititive task
+		    2) at scheduar    - only one time
+		
+		1) EX:- one schedule but 2 tasks
+			at 7:00pm
+			at> lpr /file_path (prints the file today 7 pm) 
+		--to see the tasks ---atq----tasks in queue - shows only job id
+		-- to remove ----atrm job_id
+		
+		2) EX:- crontab -e(for everyday)
+			--go in insert mode --------  min hr d m day_of_week lpr /file_name
+	
+		3) crontab -e
+			-- 30 18 1 * * * tar -cf /media/...  /stud_data------ (v is not written because it generates the o/p so cant be scheduled same for the i/p requiring commands)
+		
+			--crontab -r ---removes  the complete table
+			--- if want to deny from using at schedular then 
+			--- vi /etc/at.deny-----and type name not to be allowed and precreated
+			--- vi/etc/at.allow----- and type names to be allowed
+
+			-- same for the crontab
+
+		@@@@@@@@ any of the both file to be empty at a time 
+		@@@@@@@@ there are other back up tools "rsync" and "bacula"  of which bacula is widely used

@@ -1,0 +1,50 @@
+	1] mail server:-
+		@@ INCOMING mail server
+		@@Outgoing mail server
+	--for windows -- outlook express
+		-- ms outlook
+	--for linux-- 
+	
+	@INCOMING mail server (pkg dovecot)
+		--POP3 - post office protocol 3 --port no. 110
+		-- IMAP - port 143
+	
+	INSTALLING:- install dovecot
+	
+	CONFIGURATION:- 
+
+	STARTING:- systemctl start dovecot
+
+	@@@@ to see the list of all the servers and services running on the pc 
+	command- nmap -sS localhost (we can also see the services running on any otherr connected pc by IP adress in place of localhost)
+
+	OUTGOING MAIL SERVER:- (pkg sendmail)
+		@@smtp -- simple mail transfer protocol means protocol to send a simple mail
+		port 25
+
+	INSTALLATION:- 
+		@@sendmail pkg
+		-/etc/mail/sendmail.mc file will be created
+
+	CONFIGURATION:- 
+		-2(a) - cp /etc/mail/sendmail.mc /etc/mail/sendmail.mc.bak
+
+	@@@@@ mc- macro controller file
+	-- vi /etc/mail/sendmail.mc
+	-- @@ dnl - if the dnl is added to the starting of statement then the statement is comment and (#) means the description
+	--parameters:-
+		-DAEMON_OPTION(...)  "MTA"- mail transfer agent - if it is commented as dnl then it will not execute and no mail ill be send
+		- FEATURE - allows the unauthorized domain to accept the mails so on commenting it will protect from SPAM
+		- FeATURE - restricts the mails of which domains are not registered in DNS fdb file
+			@@ so to register in DNS add a line as "A IN MX 10 _____(FQDN of the domain)"
+		- MASQUERADE_AS (...) means represents the required domain to be seen by the receiver (generally used when the reply is not needed) 
+		- FEATURE (MASQUERADE_ENVELOPE) -- if dont want the real name to be see by the reciever then above should be masquerade
+		-- so it is good to masquerade all the masq... indicated commands
+	Starting:-
+		- for starting the the service this command doesnot reads .mc file and it is the file understoods by us and .cf file for this server cant be understand by us 
+		so it needs to converts
+		
+		2(b) make the make file ---"/etc/mail/make" ----it will go to /etc/mail and search for sendmail.mc and converts to "make" file
+		2(c) if you want to relay(accept the mail) the mail---vi /etc/mail/access  - add the mail server ip address to the file as (connect ip...   relay)(all these relay entries means these will be accepted) 
+		
+		-on adding the more cname ie. pop3,smtp,ftp... 
